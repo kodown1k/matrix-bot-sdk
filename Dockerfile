@@ -15,7 +15,7 @@ COPY --from=builder /src/lib /bot/lib
 COPY --from=builder /src/package*.json /bot
 COPY --from=builder /src/config /bot/config
 
-RUN npm ci
+RUN bun install --frozen-lockfile
 
 VOLUME /bot/config
 

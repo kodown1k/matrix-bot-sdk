@@ -15,7 +15,7 @@ import CommandHandler from "./commands/handler";
 LogService.setLogger(new RichConsoleLogger());
 
 // For now let's also make sure to log everything (for debugging)
-LogService.setLevel(LogLevel.DEBUG);
+LogService.setLevel(LogLevel.ERROR);
 
 // Also let's mute Metrics, so we don't get *too* much noise
 LogService.muteModule("Metrics");
@@ -38,7 +38,7 @@ LogService.info("index", "Bot starting...");
     // Now create the client
     const client = new MatrixClient(config.homeserverUrl, config.accessToken, storage, cryptoStore);
 
-    // Setup the autojoin mixin (if enabled)
+    // Set up the autojoin mixin (if enabled)
     if (config.autoJoin) {
         AutojoinRoomsMixin.setupOnClient(client);
     }
