@@ -2,12 +2,14 @@ import {LogService, MatrixClient, MessageEvent, RichReply, UserID} from "matrix-
 import {runHelloCommand} from "./hello";
 import * as htmlEscape from "escape-html";
 import {runRoomsCommand} from "./rooms";
+import kfs from "key-file-storage";
+import {Query} from "../db_model/query";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
 export const COMMAND_PREFIX = "!bot";
-
-export const ROOMS_WITHOUT_PREFIX = ['!AnFtjVXDrcnmZppmTB:matrix.narogu.net'];
+const store = kfs('/home/perun/Code/matrix-bot-storage1', true)
+export const ROOMS_WITHOUT_PREFIX = ['!AnFtjVXDrcnmZppmTB:matrix.narogu.net', '!vAcHYKuMfYlEjACYuU:matrix.narogu.net', '!VJjptZCWWTBniaOpti:matrix.narogu.net'];
 // This is where all of our commands will be handled
 export default class CommandHandler {
 
@@ -60,14 +62,18 @@ export default class CommandHandler {
 
         }
 
-        LogService.error('asdf', body)
-        if (!ROOMS_WITHOUT_PREFIX.includes(roomId)) {
+        const relatesId = event.content["m.relates_to"]?.event_id;
+        if (
+            !ROOMS_WITHOUT_PREFIX.includes(roomId)
+        ) {
             // Ensure that the event is a command before going on. We allow people to ping
             // the bot as well as using our COMMAND_PREFIX.
-            const prefixes = [COMMAND_PREFIX, `${this.localpart}:`, `@${this.displayName}`, `${this.userId}:`, `${this.displayName}`];
+            const prefixes = [COMMAND_PREFIX, `${this.localpart}:`, `@${this.displayName}`, `${this.userId}:`, `${this.displayName}`, `${this.displayName} `];
 
-            prefixUsed = prefixes.find(p => body.startsWith(p));
-            if (!prefixUsed) return; // Not a command (as far as we're concerned)
+            prefixUsed = prefixes.find(p => body.startsWith(p)) ?? '';
+            if (!await Query.isInReplies(relatesId)) {
+                if (!prefixUsed) return; // Not a command (as far as we're concerned)
+            }
         }
 
 

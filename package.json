@@ -30,6 +30,7 @@
     "highlight.js": "^11.9.0",
     "html-escaper": "^3.0.3",
     "js-yaml": "^4.1.0",
+    "key-file-storage": "^2.3.3",
     "langchain": "^0.1.26",
     "markdown-it": "^14.0.0",
     "matrix-bot-sdk": "^0.7.1",

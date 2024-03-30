@@ -1,7 +1,7 @@
 import {
     AutojoinRoomsMixin, ICryptoStorageProvider,
     LogLevel,
-    LogService,
+    LogService, MatrixAuth,
     MatrixClient,
     PantalaimonClient,
     RichConsoleLogger, RustSdkCryptoStorageProvider,
@@ -10,6 +10,9 @@ import {
 import * as path from "path";
 import config from "./config";
 import CommandHandler from "./commands/handler";
+import {log} from "node:util";
+
+
 
 // First things first: let's make the logs a bit prettier.
 LogService.setLogger(new RichConsoleLogger());
@@ -26,7 +29,7 @@ LogService.info("index", "Bot starting...");
 
 // This is the startup closure where we give ourselves an async context
 (async function () {
-    // Prepare the storage system for the bot
+    // Prepare the storage1 system for the bot
     const storage = new SimpleFsStorageProvider(path.join(config.dataPath, "bot.json"));
 
     // Prepare a crypto store if we need that
@@ -35,6 +38,10 @@ LogService.info("index", "Bot starting...");
         cryptoStore = new RustSdkCryptoStorageProvider(path.join(config.dataPath, "encrypted"));
     }
 
+
+    // const auth = new MatrixAuth(config.homeserverUrl);
+    // const client = await auth.passwordLogin(config.username, config.password);
+    // console.log(client.accessToken);
     // Now create the client
     const client = new MatrixClient(config.homeserverUrl, config.accessToken, storage, cryptoStore);
 
