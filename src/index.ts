@@ -39,11 +39,11 @@ LogService.info("index", "Bot starting...");
     }
 
 
-    // const auth = new MatrixAuth(config.homeserverUrl);
-    // const client = await auth.passwordLogin(config.username, config.password);
-    // console.log(client.accessToken);
+//     const auth = new MatrixAuth(config.homeserverUrl);
+ //    const client = await auth.passwordLogin(config.username, config.password);
+  //   console.log(client.accessToken);
     // Now create the client
-    const client = new MatrixClient(config.homeserverUrl, config.accessToken, storage, cryptoStore);
+     const client = new MatrixClient(config.homeserverUrl, config.accessToken, storage, cryptoStore);
 
     // Set up the autojoin mixin (if enabled)
     if (config.autoJoin) {

@@ -8,8 +8,13 @@ import {Query} from "../db_model/query";
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
 export const COMMAND_PREFIX = "!bot";
-const store = kfs('/home/perun/Code/matrix-bot-storage1', true)
-export const ROOMS_WITHOUT_PREFIX = ['!AnFtjVXDrcnmZppmTB:matrix.narogu.net', '!vAcHYKuMfYlEjACYuU:matrix.narogu.net', '!VJjptZCWWTBniaOpti:matrix.narogu.net'];
+
+export const ROOMS_WITHOUT_PREFIX = [
+    '!AnFtjVXDrcnmZppmTB:matrix.narogu.net', '!vAcHYKuMfYlEjACYuU:matrix.narogu.net', '!VJjptZCWWTBniaOpti:matrix.narogu.net',
+    '!osCjSWGzfTbBwvWENi:matrix.narogu.net', '!UGiubRcQkBrWUpaAjF:matrix.narogu.net',
+    //moja prywatna rozmowa
+    '!NGYtZHcjzYSRKzwyRR:matrix.narogu.net',
+];
 // This is where all of our commands will be handled
 export default class CommandHandler {
 
