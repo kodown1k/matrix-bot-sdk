@@ -22,7 +22,7 @@ export async function runRoomsCommand(roomId: string, event: MessageEvent<Messag
     const history = await query.history();
     const queryRow = await query.save();
 
-    let _model = 'gpt-4-turbo-preview';
+    let _model = 'gpt-3.5-turbo';
     if (textBody.includes('with:gpt-4 ')) {
         _model = 'gpt-4-turbo-preview';
         textBody = textBody.replace('with:gpt-4 ', '')

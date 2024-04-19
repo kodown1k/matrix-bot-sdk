@@ -2,18 +2,22 @@ import {LogService, MatrixClient, MessageEvent, RichReply, UserID} from "matrix-
 import {runHelloCommand} from "./hello";
 import * as htmlEscape from "escape-html";
 import {runRoomsCommand} from "./rooms";
+import {runRoomsCommand2} from "./rooms2";
 import kfs from "key-file-storage";
 import {Query} from "../db_model/query";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
-export const COMMAND_PREFIX = "!bot";
+export const COMMAND_PREFIX = "ej";
 
 export const ROOMS_WITHOUT_PREFIX = [
-    '!AnFtjVXDrcnmZppmTB:matrix.narogu.net', '!vAcHYKuMfYlEjACYuU:matrix.narogu.net', '!VJjptZCWWTBniaOpti:matrix.narogu.net',
+    '!AnFtjVXDrcnmZppmTB:matrix.narogu.net', '!vAcHYKuMfYlEjACYuU:matrix.narogu.net',
+  //  '!VJjptZCWWTBniaOpti:matrix.narogu.net',
     '!osCjSWGzfTbBwvWENi:matrix.narogu.net', '!UGiubRcQkBrWUpaAjF:matrix.narogu.net',
     //moja prywatna rozmowa
     '!NGYtZHcjzYSRKzwyRR:matrix.narogu.net',
+    //pokój dwóosobowy
+    '!DzRJZsCMIEhXmwCJeR:matrix.narogu.net',
 ];
 // This is where all of our commands will be handled
 export default class CommandHandler {
@@ -73,24 +77,35 @@ export default class CommandHandler {
         ) {
             // Ensure that the event is a command before going on. We allow people to ping
             // the bot as well as using our COMMAND_PREFIX.
-            const prefixes = [COMMAND_PREFIX, `${this.localpart}:`, `@${this.displayName}`, `${this.userId}:`, `${this.displayName}`, `${this.displayName} `];
+            const prefixes = [COMMAND_PREFIX, `${this.localpart}:`, `@${this.displayName}`, `${this.userId}:`,
+	//	    `${this.displayName}`, 
+	    `${this.displayName} `];
 
             prefixUsed = prefixes.find(p => body.startsWith(p)) ?? '';
             if (!await Query.isInReplies(relatesId)) {
                 if (!prefixUsed) return; // Not a command (as far as we're concerned)
             }
         }
-
+console.log(prefixUsed);
 
         // Check to see what the arguments were to the command
         const args = body.substring(prefixUsed.length).trim();
 
-        return runRoomsCommand(roomId, event, args, this.client);
+//        return runRoomsCommand(roomId, event, args, this.client);
         // Try and figure out what command the user ran, defaulting to help
-        // try {
-        //     if (args[0] === "hello") {
-        //         return runHelloCommand(roomId, event, args, this.client);
-        //     } else if (args[0] === "rooms") {
+         try {
+//             if (prefixUsed.trim() === "e") {
+//	        return runRoomsCommand(roomId, event, args, this.client);
+  //           }
+
+	     if (prefixUsed.trim() === "ej") {
+    	         return runRoomsCommand2(roomId, event, args, this.client);
+	     }
+	     else {
+	        return runRoomsCommand(roomId, event, args, this.client);
+	     }
+
+//	     else if (args[0] === "rooms") {
         //         return runRoomsCommand(roomId, event, args, this.client);
         //     } else {
         //         const help = "" +
@@ -103,13 +118,13 @@ export default class CommandHandler {
         //         reply["msgtype"] = "m.notice"; // Bots should always use notices
         //         return this.client.sendMessage(roomId, reply);
         //     }
-        // } catch (e) {
-        //     // Log the error
-        //     LogService.error("CommandHandler", e);
-        //
-        //     // Tell the user there was a problem
-        //     const message = "There was an error processing your command";
-        //     return this.client.replyNotice(roomId, ev, message);
-        // }
+         } catch (e) {
+             // Log the error
+             LogService.error("CommandHandler", e);
+        
+             // Tell the user there was a problem
+             const message = "bla...";
+             return this.client.replyNotice(roomId, ev, message);
+         }
     }
 }
